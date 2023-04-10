@@ -28,6 +28,7 @@ class MainWindow(QMainWindow):
         self._createActions()
         self._createMenuBar()
         self._createToolBars()
+        self._createStatusBar()
 
 
     
@@ -51,6 +52,9 @@ class MainWindow(QMainWindow):
         # File actions
         self.adAction = QAction(self)
         self.adAction.setText("&Add worker")
+        newTip = "Create a new worker"
+        self.adAction.setStatusTip(newTip)
+        self.adAction.setToolTip(newTip)
         icon = qta.icon("fa.user-plus")
         self.adAction.setIcon(icon)
 
@@ -58,11 +62,17 @@ class MainWindow(QMainWindow):
         self.editAction.setText("&Edit worker")
         icon = qta.icon("fa5s.user-edit")
         self.editAction.setIcon(icon)
+        newTip = "Edit selected worker"
+        self.editAction.setStatusTip(newTip)
+        self.editAction.setToolTip(newTip)
 
         self.deleteAction = QAction(self)
         self.deleteAction.setText("&Delete worker")
         icon = qta.icon("fa.user-times")
         self.deleteAction.setIcon(icon)
+        newTip = "Delete selected worker"
+        self.deleteAction.setStatusTip(newTip)
+        self.deleteAction.setToolTip(newTip)
 
     def _createToolBars(self):
         # data toolbar
@@ -73,6 +83,9 @@ class MainWindow(QMainWindow):
         # Edit toolbar
         dataToolBar = QToolBar("Edit", self)
         self.addToolBar(dataToolBar)
+    
+    def _createStatusBar(self):
+        self.statusbar = self.statusBar()
 
 
 
