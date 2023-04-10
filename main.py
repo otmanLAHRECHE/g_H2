@@ -30,6 +30,8 @@ class MainWindow(QMainWindow):
         self._createToolBars()
         self._createStatusBar()
 
+        self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
+
 
     
     def _createMenuBar(self):
