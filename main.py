@@ -7,9 +7,10 @@ import platform
 
 from PyQt5 import Qt, uic, QtWidgets, QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar
+from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar, QMessageBox
 import qdarktheme
 import qtawesome as qta
+from dialogs import *
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -25,6 +26,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi("./ui/main_ui.ui", self)
+
+
         self._createActions()
         self._createMenuBar()
         self._createToolBars()
@@ -98,6 +101,8 @@ class MainWindow(QMainWindow):
         self.helpAction.setStatusTip(newTip)
         self.helpAction.setToolTip(newTip)
 
+        self.helpAction.triggered.connect(self.helpActionClicked_)
+
         self.servicesAction = QAction(self)
         self.servicesAction.setText("&Services")
         icon = qta.icon("fa5s.hospital-user")
@@ -170,6 +175,17 @@ class MainWindow(QMainWindow):
     
     def _createStatusBar(self):
         self.statusbar = self.statusBar()
+
+    def alert_(self, message):
+        alert = QMessageBox()
+        alert.setWindowTitle("alert")
+        alert.setText(message)
+        alert.exec_()
+
+    def helpActionClicked_(self):
+        self.dialog = About_dialog()
+        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.dialog.show()
 
 
 
