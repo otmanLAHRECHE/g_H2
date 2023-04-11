@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         self.adAction.setToolTip(newTip)
         icon = qta.icon("fa.user-plus")
         self.adAction.setIcon(icon)
+        self.adAction.triggered.connect(self.workerAddActionClicked_)
 
         self.editAction = QAction(self)
         self.editAction.setText("&Edit worker")
@@ -76,6 +77,7 @@ class MainWindow(QMainWindow):
         newTip = "Edit selected worker"
         self.editAction.setStatusTip(newTip)
         self.editAction.setToolTip(newTip)
+        self.editAction.triggered.connect(self.workerUpdateActionClicked_)
 
         self.deleteAction = QAction(self)
         self.deleteAction.setText("&Delete worker")
@@ -110,6 +112,7 @@ class MainWindow(QMainWindow):
         newTip = "Manage the services"
         self.servicesAction.setStatusTip(newTip)
         self.servicesAction.setToolTip(newTip)
+        self.servicesAction.triggered.connect(self.servicesActionClicked_)
 
         self.exportData = QAction(self)
         self.exportData.setText("&Export database")
@@ -184,6 +187,20 @@ class MainWindow(QMainWindow):
 
     def helpActionClicked_(self):
         self.dialog = About_dialog()
+        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.dialog.show()
+    def servicesActionClicked_(self):
+        self.dialog = Service_dialog()
+        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.dialog.show()
+    def workerAddActionClicked_(self):
+        self.dialog = Worker_dialog()
+        self.dialog.setWindowTitle("add new worker")
+        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.dialog.show()
+    def workerUpdateActionClicked_(self):
+        self.dialog = Worker_dialog()
+        self.dialog.setWindowTitle("update worker")
         self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
 
