@@ -39,16 +39,22 @@ class MainWindow(QMainWindow):
         # Creating menus using a QMenu object
         dataMenu = QMenu("&Data", self)
         menuBar.addMenu(dataMenu)
+        dataMenu.addAction(self.servicesAction)
+        dataMenu.addAction(self.exportData)
+        dataMenu.addAction(self.exportWorkers)
+        dataMenu.addAction(self.importWorkers)
         operationMenu = QMenu("&Operations", self)
         menuBar.addMenu(operationMenu)
         operationMenu.addAction(self.adAction)
         operationMenu.addAction(self.editAction)
         operationMenu.addAction(self.deleteAction)
-        detailsMenu = QMenu("&Details", self)
-        menuBar.addMenu(detailsMenu)
+        operationMenu.addAction(self.detailsAction)
         # Creating menus using a title
         printMenu = menuBar.addMenu("&Print")
+        printMenu.addAction(self.printPerService)
+        printMenu.addAction(self.printPerwWorker)
         helpMenu = menuBar.addMenu("&About")
+        helpMenu.addAction(self.helpAction)
 
     def _createActions(self):
         # File actions
@@ -76,15 +82,91 @@ class MainWindow(QMainWindow):
         self.deleteAction.setStatusTip(newTip)
         self.deleteAction.setToolTip(newTip)
 
+        self.detailsAction = QAction(self)
+        self.detailsAction.setText("&Details")
+        icon = qta.icon("mdi.account-details")
+        self.detailsAction.setIcon(icon)
+        newTip = "Details of selected worker"
+        self.detailsAction.setStatusTip(newTip)
+        self.detailsAction.setToolTip(newTip)
+
+        self.helpAction = QAction(self)
+        self.helpAction.setText("&About")
+        icon = qta.icon("fa5s.hands-helping")
+        self.helpAction.setIcon(icon)
+        newTip = "About the app"
+        self.helpAction.setStatusTip(newTip)
+        self.helpAction.setToolTip(newTip)
+
+        self.servicesAction = QAction(self)
+        self.servicesAction.setText("&Services")
+        icon = qta.icon("fa5s.hospital-user")
+        self.servicesAction.setIcon(icon)
+        newTip = "Manage the services"
+        self.servicesAction.setStatusTip(newTip)
+        self.servicesAction.setToolTip(newTip)
+
+        self.exportData = QAction(self)
+        self.exportData.setText("&Export database")
+        icon = qta.icon("mdi.database-arrow-down")
+        self.exportData.setIcon(icon)
+        newTip = "Export the database"
+        self.exportData.setStatusTip(newTip)
+        self.exportData.setToolTip(newTip)
+
+        self.exportWorkers= QAction(self)
+        self.exportWorkers.setText("&Export workers")
+        icon = qta.icon("fa5s.file-export")
+        self.exportWorkers.setIcon(icon)
+        newTip = "Export the saved workers"
+        self.exportWorkers.setStatusTip(newTip)
+        self.exportWorkers.setToolTip(newTip)
+
+        self.importWorkers= QAction(self)
+        self.importWorkers.setText("&Import workers")
+        icon = qta.icon("fa5s.file-import")
+        self.importWorkers.setIcon(icon)
+        newTip = "Import workers"
+        self.importWorkers.setStatusTip(newTip)
+        self.importWorkers.setToolTip(newTip)
+
+        self.printPerService= QAction(self)
+        self.printPerService.setText("&Print per service")
+        icon = qta.icon("ri.printer-cloud-line")
+        self.printPerService.setIcon(icon)
+        newTip = "Print per service"
+        self.printPerService.setStatusTip(newTip)
+        self.printPerService.setToolTip(newTip)
+
+        self.printPerwWorker= QAction(self)
+        self.printPerwWorker.setText("&Print per worker")
+        icon = qta.icon("ri.printer-line")
+        self.printPerwWorker.setIcon(icon)
+        newTip = "Print per worker"
+        self.printPerwWorker.setStatusTip(newTip)
+        self.printPerwWorker.setToolTip(newTip)
+
+        
+
     def _createToolBars(self):
         # data toolbar
         operationToolBar = self.addToolBar("Operation")
         operationToolBar.addAction(self.adAction)
         operationToolBar.addAction(self.editAction)
         operationToolBar.addAction(self.deleteAction)
+        operationToolBar.addAction(self.detailsAction)
         # Edit toolbar
-        dataToolBar = QToolBar("Edit", self)
+        dataToolBar = QToolBar("Data", self)
         self.addToolBar(dataToolBar)
+        dataToolBar.addAction(self.servicesAction)
+        dataToolBar.addAction(self.exportData)
+        dataToolBar.addAction(self.exportWorkers)
+        dataToolBar.addAction(self.importWorkers)
+
+        printToolBar = QToolBar("Print", self)
+        self.addToolBar(printToolBar)
+        printToolBar.addAction(self.printPerService)
+        printToolBar.addAction(self.printPerwWorker)
     
     def _createStatusBar(self):
         self.statusbar = self.statusBar()
