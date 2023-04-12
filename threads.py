@@ -5,6 +5,25 @@ from daatabase_ops import *
 import PyQt5
 from PyQt5.QtCore import QThread, pyqtSignal
 
+class ThreadLoadServices(QThread):
+    _signal = pyqtSignal(int)
+    _signal_list = pyqtSignal(tuple)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self):
+        super(ThreadLoadServices, self).__init__()
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        services = load_services()
+        for i in range(len(services)):
+            self._signal.emit(i)
+            self._signal_list.emit(services[i])
+
+        self._signal_result.emit(True)
 
 class ThreadAddService(QThread):
     _signal = pyqtSignal(int)

@@ -7,10 +7,11 @@ import platform
 
 from PyQt5 import Qt, uic, QtWidgets, QtCore
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar, QMessageBox, QListWidgetItem
 import qdarktheme
 import qtawesome as qta
 from dialogs import *
+from threads import *
 
 
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -191,11 +192,13 @@ class MainWindow(QMainWindow):
         self.dialog.show()
     def servicesActionClicked_(self):
         self.dialog = Service_dialog()
-        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
         self.dialog.add_button.clicked.connect(self._service_add_clicked)
-        self.dialog.update_button.clicked.connect(self._service_update_clicked)
-        self.dialog.delete_button.clicked.connect(self._service_delete_clicked)
+        #self.dialog.update_button.clicked.connect(self._service_update_clicked)
+        #self.dialog.delete_button.clicked.connect(self._service_delete_clicked)
+        self.load_service_all()
+
+        
     def workerAddActionClicked_(self):
         self.dialog = Worker_dialog()
         self.dialog.setWindowTitle("add new worker")
@@ -211,7 +214,35 @@ class MainWindow(QMainWindow):
         if self.dialog.service.text() == "":
             self.alert_("service name is invalide!!")
         else:
-            
+            self.thread = ThreadAddService(self.dialog.service.text())
+            self.thread._signal.connect(self.signal_add_service)
+            self.thread._signal_result.connect(self.signal_add_service)
+            self.thread.start()
+
+    
+    def signal_add_service(self, progress):
+        if type(progress) == int:
+            self.dialog.progress.setValue(progress)
+        else:
+            self.dialog.progress.setValue(0)
+            self.load_service_all()
+    
+    def load_service_all(self):
+        self.thread = ThreadLoadServices()
+        self.thread._signal.connect(self.signal_load_service)
+        self.thread._signal_list.connect(self.signal_load_service)
+        self.thread._signal_result.connect(self.signal_load_service)
+        self.thread.start()
+
+    def signal_load_service(self, progress):
+        if type(progress) == int:
+            self.dialog.progress.setValue(progress)
+        elif type(progress) == bool:
+            self.dialog.progress.setValue(0)
+        else:
+            listWidgetItem = QListWidgetItem(str(progress))
+            self.dialog.list.addItem(listWidgetItem)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
