@@ -1,0 +1,22 @@
+CREATE TABLE service (
+   service_id INTEGER PRIMARY KEY AUTOINCREMENT,
+   service_name text NOT NULL,
+);
+
+
+CREATE TABLE worker (
+   worker_id INTEGER PRIMARY KEY AUTOINCREMENT,
+   first_name text NOT NULL,
+   last_name text NOT NULL,
+   service_id INTEGER NOT NULL,
+  FOREIGN KEY(service_id) REFERENCES service(service_id)
+);
+
+
+CREATE TABLE garde (
+   garde_id INTEGER PRIMARY KEY AUTOINCREMENT,
+   month INTEGER NOT NULL,
+   year INTEGER NOT NULL,
+   gardien_id INTEGER NOT NULL,
+  FOREIGN KEY(gardien_id) REFERENCES worker(worker_id)
+);
