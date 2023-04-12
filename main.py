@@ -193,6 +193,9 @@ class MainWindow(QMainWindow):
         self.dialog = Service_dialog()
         self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
+        self.dialog.add_button.clicked.connect(self._service_add_clicked)
+        self.dialog.update_button.clicked.connect(self._service_update_clicked)
+        self.dialog.delete_button.clicked.connect(self._service_delete_clicked)
     def workerAddActionClicked_(self):
         self.dialog = Worker_dialog()
         self.dialog.setWindowTitle("add new worker")
@@ -204,7 +207,11 @@ class MainWindow(QMainWindow):
         self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
 
-
+    def _service_add_clicked(self):
+        if self.dialog.service.text() == "":
+            self.alert_("service name is invalide!!")
+        else:
+            
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -25,6 +25,7 @@ class Service_dialog(QtWidgets.QDialog):
         self.add_button = self.findChild(QtWidgets.QPushButton, "pushButton")
         self.update_button = self.findChild(QtWidgets.QPushButton, "pushButton_3")
         self.delete_button = self.findChild(QtWidgets.QPushButton, "pushButton_2")
+        self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
 
 
 class About_dialog(QtWidgets.QDialog):

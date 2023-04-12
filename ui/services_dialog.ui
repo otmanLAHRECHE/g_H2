@@ -7,8 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>478</width>
-    <height>371</height>
+    <height>377</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>478</width>
+    <height>377</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>478</width>
+    <height>377</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Services</string>
@@ -37,21 +49,6 @@
       <height>321</height>
      </rect>
     </property>
-    <item>
-     <property name="text">
-      <string>service01</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>service02</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>service03</string>
-     </property>
-    </item>
    </widget>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -121,6 +118,28 @@
    </property>
    <property name="text">
     <string>Update service</string>
+   </property>
+  </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>350</y>
+     <width>311</width>
+     <height>5</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>5</height>
+    </size>
+   </property>
+   <property name="value">
+    <number>0</number>
+   </property>
+   <property name="textVisible">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>
