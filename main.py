@@ -225,6 +225,8 @@ class MainWindow(QMainWindow):
             self.dialog.progress.setValue(progress)
         else:
             self.dialog.progress.setValue(0)
+            self.dialog.list.clear()
+            self.dialog.service.setText("")
             self.load_service_all()
     
     def load_service_all(self):
