@@ -7,7 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 class ThreadLoadServices(QThread):
     _signal = pyqtSignal(int)
-    _signal_list = pyqtSignal(tuple)
+    _signal_list = pyqtSignal(str)
     _signal_result = pyqtSignal(bool)
 
     def __init__(self):
@@ -21,7 +21,8 @@ class ThreadLoadServices(QThread):
         services = load_services()
         for i in range(len(services)):
             self._signal.emit(i)
-            self._signal_list.emit(services[i])
+            ser = services[i]
+            self._signal_list.emit(ser[1])
 
         self._signal_result.emit(True)
 
@@ -47,3 +48,32 @@ class ThreadAddService(QThread):
             self._signal.emit(i)
 
         self._signal_result.emit(True)
+
+
+
+class ThreadUpdateService(QThread):
+    _signal = pyqtSignal(int)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, id, service_name):
+        super(ThreadUpdateService, self).__init__()
+        self.id = id
+        self.service_name = service_name
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        for i in range(30):
+            self._signal.emit(i)
+
+        update_service(self.id, self.service_name)
+
+        for i in range(30, 99):
+            self._signal.emit(i)
+
+        self._signal_result.emit(True)
+
+
+

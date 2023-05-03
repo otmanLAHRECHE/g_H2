@@ -14,6 +14,9 @@
    <string>EPSP Djanet g_H v2.0.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">font-size: 12px;</string>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="leftMargin">
      <number>6</number>

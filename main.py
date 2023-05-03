@@ -194,7 +194,7 @@ class MainWindow(QMainWindow):
         self.dialog = Service_dialog()
         self.dialog.show()
         self.dialog.add_button.clicked.connect(self._service_add_clicked)
-        #self.dialog.update_button.clicked.connect(self._service_update_clicked)
+        self.dialog.update_button.clicked.connect(self._service_update_clicked)
         #self.dialog.delete_button.clicked.connect(self._service_delete_clicked)
         self.load_service_all()
 
@@ -219,8 +219,25 @@ class MainWindow(QMainWindow):
             self.thread._signal_result.connect(self.signal_add_service)
             self.thread.start()
 
+    def _service_update_clicked(self):
+        if self.dialog.service.text() == "":
+            self.alert_("service name is invalide!!")
+        else:
+            self.thread = ThreadUpdateService(self.dialog.service.text())
+            self.thread._signal.connect(self.signal_update_service)
+            self.thread._signal_result.connect(self.signal_update_service)
+
     
     def signal_add_service(self, progress):
+        if type(progress) == int:
+            self.dialog.progress.setValue(progress)
+        else:
+            self.dialog.progress.setValue(0)
+            self.dialog.list.clear()
+            self.dialog.service.setText("")
+            self.load_service_all()
+
+    def signal_update_service(self, progress):
         if type(progress) == int:
             self.dialog.progress.setValue(progress)
         else:
