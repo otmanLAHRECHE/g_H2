@@ -55,10 +55,10 @@ class ThreadUpdateService(QThread):
     _signal = pyqtSignal(int)
     _signal_result = pyqtSignal(bool)
 
-    def __init__(self, id, service_name):
+    def __init__(self, service_name, new_service_name):
         super(ThreadUpdateService, self).__init__()
-        self.id = id
         self.service_name = service_name
+        self.new_service_name = new_service_name
 
     def __del__(self):
         self.terminate()
@@ -68,7 +68,9 @@ class ThreadUpdateService(QThread):
         for i in range(30):
             self._signal.emit(i)
 
-        update_service(self.id, self.service_name)
+        id = get_service_id_from_name(self.service_name)
+        id = id[0]
+        update_service(id[0], self.new_service_name)
 
         for i in range(30, 99):
             self._signal.emit(i)

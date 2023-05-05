@@ -222,10 +222,13 @@ class MainWindow(QMainWindow):
     def _service_update_clicked(self):
         if self.dialog.service.text() == "":
             self.alert_("service name is invalide!!")
+        elif self.dialog.list.currentItem() == None:
+            self.alert_("select a service to update!!")
         else:
-            self.thread = ThreadUpdateService(self.dialog.service.text())
+            self.thread = ThreadUpdateService(self.dialog.list.currentItem().text() ,self.dialog.service.text())
             self.thread._signal.connect(self.signal_update_service)
             self.thread._signal_result.connect(self.signal_update_service)
+            self.thread.start()
 
     
     def signal_add_service(self, progress):

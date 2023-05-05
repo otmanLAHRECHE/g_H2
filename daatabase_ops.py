@@ -36,3 +36,13 @@ def delete_service(id):
     cur.execute(sql_q, (id,))
     connection.commit()
     connection.close()
+
+
+def get_service_id_from_name(service_name):
+    connection = sqlite3.connect("data/database.db")
+    cur = connection.cursor()
+    sql_q = 'SELECT service_id FROM service where service_name=?'
+    cur.execute(sql_q, (service_name,))
+    results = cur.fetchall()
+    connection.close()
+    return results
