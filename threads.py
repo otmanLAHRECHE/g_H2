@@ -79,3 +79,30 @@ class ThreadUpdateService(QThread):
 
 
 
+class ThreadDeleteService(QThread):
+    _signal = pyqtSignal(int)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, service_name):
+        super(ThreadDeleteService, self).__init__()
+        self.service_name = service_name
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        for i in range(30):
+            self._signal.emit(i)
+
+        id = get_service_id_from_name(self.service_name)
+        id = id[0]
+        delete_service(id[0])
+
+        for i in range(30, 99):
+            self._signal.emit(i)
+
+        self._signal_result.emit(True)
+
+
+
