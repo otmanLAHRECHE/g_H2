@@ -155,6 +155,12 @@ class MainWindow(QMainWindow):
         self.printPerwWorker.setStatusTip(newTip)
         self.printPerwWorker.setToolTip(newTip)
 
+        self.find_worker = QtWidgets.QLineEdit()
+        self.find_worker.setPlaceholderText("Find worker")
+        newTip = "Find worker"
+        self.find_worker.setStatusTip(newTip)
+        self.find_worker.setToolTip(newTip)
+
         
 
     def _createToolBars(self):
@@ -164,6 +170,7 @@ class MainWindow(QMainWindow):
         operationToolBar.addAction(self.editAction)
         operationToolBar.addAction(self.deleteAction)
         operationToolBar.addAction(self.detailsAction)
+        operationToolBar.addWidget(self.find_worker)
         # Edit toolbar
         dataToolBar = QToolBar("Data", self)
         self.addToolBar(dataToolBar)
