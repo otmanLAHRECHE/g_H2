@@ -5,9 +5,9 @@ import sys
 import os
 import platform
 
-from PyQt5 import Qt, uic, QtWidgets, QtCore
+from PyQt5 import Qt, uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar, QMessageBox, QListWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QMenu, QAction, QToolBar, QMessageBox, QListWidgetItem, QTableWidgetItem
 import qdarktheme
 import qtawesome as qta
 from dialogs import *
@@ -29,12 +29,14 @@ class MainWindow(QMainWindow):
         uic.loadUi("./ui/main_ui.ui", self)
 
 
+
         self._createActions()
         self._createMenuBar()
         self._createToolBars()
         self._createStatusBar()
 
         self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
+        self.table_workers = self.findChild(QtWidgets.QTableWidget, "tableWidget")
 
 
     
@@ -289,6 +291,44 @@ class MainWindow(QMainWindow):
         else:
             listWidgetItem = QListWidgetItem(str(progress))
             self.dialog.list.addItem(listWidgetItem)
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        message = "You want to exit?"
+        dialog = CustomDialog(message)
+        if dialog.exec():
+            self.close()
+        else:
+            a0.ignore()
+
+    def load_workers(self):
+        self.table_workers.tableWidget(0)
+
+        self.thread = ThreadLoadWorkers()
+        self.thread._signal.connect(self.signal_load_workers)
+        self.thread._signal_list.connect(self.signal_load_workers)
+        self.thread._signal_result.connect(self.signal_load_workers)
+        self.thread.start()
+    
+    def signal_load_workers(self, progress):
+        if type(progress) == int:
+            self.progress.setValue(progress)
+        elif type(progress) == bool:
+            self.progress.setValue(0)
+        else:
+
+            row = self.table_workers.rowCount()
+            self.table_workers.insertRow(row)
+            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[0]))
+            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[1]))
+            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[2]))
+            self.table_workers.setItem(row, 3, QTableWidgetItem(progress[3]))
+
+            self.table_workers.item(row, 0).setBackground(QColor(220,255,220))
+            self.table_workers.item(row, 1).setBackground(QColor(220,255,220))
+            self.table_workers.item(row, 2).setBackground(QColor(220,255,220))
+            self.table_workers.item(row, 3).setBackground(QColor(220,255,220))
+
+
 
 
 if __name__ == "__main__":

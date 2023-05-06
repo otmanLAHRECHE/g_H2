@@ -105,4 +105,108 @@ class ThreadDeleteService(QThread):
         self._signal_result.emit(True)
 
 
+class ThreadLoadWorkers(QThread):
+    _signal = pyqtSignal(int)
+    _signal_list = pyqtSignal(list)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self):
+        super(ThreadLoadWorkers, self).__init__()
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        workers = load_workers()
+        for i in range(len(workers)):
+            self._signal.emit(i)
+            time.sleep(0.05)
+            work = workers[i]
+            service_name = get_service_name_from_id(int(work[3]))
+            work[3] = service_name
+            print(work)
+            self._signal_list.emit(work)
+
+        self._signal_result.emit(True)
+
+
+
+class ThreadAddWorker(QThread):
+    _signal = pyqtSignal(int)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, first_name, last_name, service_id):
+        super(ThreadAddWorker, self).__init__()
+        self.first_name = first_name
+        self.last_name = last_name
+        self.service_id = service_id
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        for i in range(30):
+            self._signal.emit(i)
+
+        create_worker(self.first_name, self.last_name, self.service_id)
+
+        for i in range(30, 99):
+            self._signal.emit(i)
+
+        self._signal_result.emit(True)
+
+
+
+class ThreadUpdateWorker(QThread):
+    _signal = pyqtSignal(int)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, id, first_name, last_name):
+        super(ThreadUpdateWorker, self).__init__()
+        self.first_name = first_name
+        self.last_name = last_name
+        self.id = id
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        for i in range(30):
+            self._signal.emit(i)
+
+        update_worker(self.id, self.first_name, self.last_name)
+
+        for i in range(30, 99):
+            self._signal.emit(i)
+
+        self._signal_result.emit(True)
+
+
+
+class ThreadDeleteWorker(QThread):
+    _signal = pyqtSignal(int)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, id):
+        super(ThreadDeleteWorker, self).__init__()
+        self.id = id
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+        for i in range(30):
+            self._signal.emit(i)
+
+        
+        delete_worker(id)
+
+        for i in range(30, 99):
+            self._signal.emit(i)
+
+        self._signal_result.emit(True)
 

@@ -38,3 +38,21 @@ class About_dialog(QtWidgets.QDialog):
         self.frame.setStyleSheet("background-image : url(./images/images/epsp.png);")
 
 
+
+class CustomDialog(QtWidgets.QDialog):
+    def __init__(self, msg, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("Alert")
+
+        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.layout = QVBoxLayout()
+        message = QLabel(msg)
+        self.layout.addWidget(message)
+        self.layout.addWidget(self.buttonBox)
+        self.setLayout(self.layout)
