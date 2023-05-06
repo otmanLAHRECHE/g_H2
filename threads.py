@@ -136,11 +136,11 @@ class ThreadAddWorker(QThread):
     _signal = pyqtSignal(int)
     _signal_result = pyqtSignal(bool)
 
-    def __init__(self, first_name, last_name, service_id):
+    def __init__(self, first_name, last_name, service_name):
         super(ThreadAddWorker, self).__init__()
         self.first_name = first_name
         self.last_name = last_name
-        self.service_id = service_id
+        self.service_name = service_name
 
     def __del__(self):
         self.terminate()
@@ -150,7 +150,12 @@ class ThreadAddWorker(QThread):
         for i in range(30):
             self._signal.emit(i)
 
-        create_worker(self.first_name, self.last_name, self.service_id)
+        id = get_service_id_from_name(self.service_name)
+        id = id[0]
+        print(self.first_name)
+        print(self.last_name)
+        print(id[0])
+        #create_worker(self.first_name, self.last_name, id[0])
 
         for i in range(30, 99):
             self._signal.emit(i)

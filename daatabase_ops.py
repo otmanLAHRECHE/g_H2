@@ -74,7 +74,7 @@ def create_worker(first_name, last_name, service_id):
     connection.commit()
     connection.close()
 
-def update_worker(id, worker_id, first_name, last_name):
+def update_worker(worker_id, first_name, last_name):
     connection = sqlite3.connect("data/database.db")
     cur = connection.cursor()
     sql_q = 'UPDATE worker SET first_name= ? and last_name= ? where worker_id = ?'

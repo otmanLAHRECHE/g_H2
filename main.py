@@ -207,17 +207,49 @@ class MainWindow(QMainWindow):
         self.dialog.delete_button.clicked.connect(self._service_delete_clicked)
         self.load_service_all()
 
-        
+    def load_services_combo(self):
+        connection = sqlite3.connect("data/database.db")
+        cur = connection.cursor()
+        sql_q = 'SELECT service_name FROM service'
+        cur.execute(sql_q)
+        self.service_combo = cur.fetchall()
+        connection.close()
+
     def workerAddActionClicked_(self):
+        self.load_services_combo()
+            
         self.dialog = Worker_dialog()
-        self.dialog.setWindowTitle("add new worker")
+        self.dialog.setWindowTitle("add new worker")        
+        for i in range(len(self.service_combo)):
+            serv = self.service_combo[i]
+            self.dialog.service.addItem(serv[0])
         self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
+
+        if self.dialog.exec():
+            if(self.dialog.nom.text() == "" or self.dialog.prenom.text() == ""):
+                self.alert_("error in firstname or lastname")
+            else:
+                self.thread = ThreadAddWorker(self.dialog.nom.text(), self.dialog.prenom.text(), self.dialog.service.currentText()) 
+                self.thread._signal.connect(self.signal_add_worker)
+                self.thread._signal_result.connect(self.signal_add_worker)
+                self.thread.start()
+
+    def signal_add_worker(self, progress):
+        if type(progress) == int:
+            self.progress.setValue(progress)
+        else:
+            self.progress.setValue(0)
+            self.load_workers()
+    
+    
     def workerUpdateActionClicked_(self):
         self.dialog = Worker_dialog()
         self.dialog.setWindowTitle("update worker")
         self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.dialog.show()
+
+    
 
     def _service_add_clicked(self):
         if self.dialog.service.text() == "":
@@ -301,7 +333,7 @@ class MainWindow(QMainWindow):
             a0.ignore()
 
     def load_workers(self):
-        self.table_workers.tableWidget(0)
+        self.table_workers.setRowCount(0)
 
         self.thread = ThreadLoadWorkers()
         self.thread._signal.connect(self.signal_load_workers)
