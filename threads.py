@@ -121,12 +121,15 @@ class ThreadLoadWorkers(QThread):
         workers = load_workers()
         for i in range(len(workers)):
             self._signal.emit(i)
-            time.sleep(0.05)
+            time.sleep(0.005)
             work = workers[i]
             service_name = get_service_name_from_id(int(work[3]))
-            work[3] = service_name
+            service_name = service_name[0]
+            work_list = list(work)
+            work_list[3] = service_name[0]
+
             print(work)
-            self._signal_list.emit(work)
+            self._signal_list.emit(work_list)
 
         self._signal_result.emit(True)
 
@@ -148,17 +151,16 @@ class ThreadAddWorker(QThread):
 
     def run(self):
         for i in range(30):
-            self._signal.emit(i)
+            self._signal.emit(i)            
+            time.sleep(0.005)
 
         id = get_service_id_from_name(self.service_name)
         id = id[0]
-        print(self.first_name)
-        print(self.last_name)
-        print(id[0])
-        #create_worker(self.first_name, self.last_name, id[0])
+        create_worker(self.first_name, self.last_name, id[0])
 
         for i in range(30, 99):
-            self._signal.emit(i)
+            self._signal.emit(i)            
+            time.sleep(0.005)
 
         self._signal_result.emit(True)
 
@@ -181,11 +183,13 @@ class ThreadUpdateWorker(QThread):
     def run(self):
         for i in range(30):
             self._signal.emit(i)
+            time.sleep(0.005)
 
         update_worker(self.id, self.first_name, self.last_name)
 
         for i in range(30, 99):
             self._signal.emit(i)
+            time.sleep(0.005)
 
         self._signal_result.emit(True)
 
@@ -206,12 +210,14 @@ class ThreadDeleteWorker(QThread):
     def run(self):
         for i in range(30):
             self._signal.emit(i)
+            time.sleep(0.005)
 
         
         delete_worker(id)
 
         for i in range(30, 99):
             self._signal.emit(i)
+            time.sleep(0.005)
 
         self._signal_result.emit(True)
 

@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
         self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
         self.table_workers = self.findChild(QtWidgets.QTableWidget, "tableWidget")
 
+        self.load_workers()
 
     
     def _createMenuBar(self):
@@ -350,15 +351,13 @@ class MainWindow(QMainWindow):
 
             row = self.table_workers.rowCount()
             self.table_workers.insertRow(row)
-            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[0]))
-            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[1]))
-            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[2]))
-            self.table_workers.setItem(row, 3, QTableWidgetItem(progress[3]))
+            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[1]))
+            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[2]))
+            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[3]))
 
             self.table_workers.item(row, 0).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 1).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 2).setBackground(QColor(220,255,220))
-            self.table_workers.item(row, 3).setBackground(QColor(220,255,220))
 
 
 
