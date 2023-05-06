@@ -168,11 +168,12 @@ class ThreadUpdateWorker(QThread):
     _signal = pyqtSignal(int)
     _signal_result = pyqtSignal(bool)
 
-    def __init__(self, id, first_name, last_name):
+    def __init__(self, id, first_name, last_name, service_name):
         super(ThreadUpdateWorker, self).__init__()
         self.first_name = first_name
         self.last_name = last_name
         self.id = id
+        self.service_name = service_name
 
     def __del__(self):
         self.terminate()
@@ -183,7 +184,9 @@ class ThreadUpdateWorker(QThread):
             self._signal.emit(i)
             time.sleep(0.005)
 
-        update_worker(self.id, self.first_name, self.last_name)
+        id = get_service_id_from_name(self.service_name)
+        id = id[0]
+        update_worker(int(self.id), str(self.first_name), str(self.last_name), int(id[0]))
 
         for i in range(30, 99):
             self._signal.emit(i)

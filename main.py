@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
         self.table_workers = self.findChild(QtWidgets.QTableWidget, "tableWidget")
 
-        self.table_workers.hideColumn(0)
+        #self.table_workers.hideColumn(0)
         self.table_workers.setColumnWidth(1, 180)
         self.table_workers.setColumnWidth(2, 180)
         self.table_workers.setColumnWidth(3, 180)
@@ -266,6 +266,22 @@ class MainWindow(QMainWindow):
             self.dialog.service.setCurrentText(self.table_workers.item(self.table_workers.currentRow(),3).text())
             self.dialog.show()
 
+        if self.dialog.exec():
+            if(self.dialog.nom.text() == "" or self.dialog.prenom.text() == ""):
+                self.alert_("error in firstname or lastname")
+            else:
+                self.thread = ThreadUpdateWorker(self.table_workers.item(self.table_workers.currentRow(),0).text(), self.dialog.nom.text(), self.dialog.prenom.text(), self.dialog.service.currentText()) 
+                self.thread._signal.connect(self.signal_update_worker)
+                self.thread._signal_result.connect(self.signal_update_worker)
+                self.thread.start()
+
+    def signal_update_worker(self, progress):
+        if type(progress) == int:
+            self.progress.setValue(progress)
+        else:
+            self.progress.setValue(0)
+            self.load_workers()
+
     
 
     def _service_add_clicked(self):
@@ -364,13 +380,12 @@ class MainWindow(QMainWindow):
         elif type(progress) == bool:
             self.progress.setValue(0)
         else:
-
             row = self.table_workers.rowCount()
             self.table_workers.insertRow(row)
-            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[0]))
-            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[1]))
-            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[2]))
-            self.table_workers.setItem(row, 3, QTableWidgetItem(progress[3]))
+            self.table_workers.setItem(row, 0, QTableWidgetItem(str(progress[0])))
+            self.table_workers.setItem(row, 1, QTableWidgetItem(str(progress[1])))
+            self.table_workers.setItem(row, 2, QTableWidgetItem(str(progress[2])))
+            self.table_workers.setItem(row, 3, QTableWidgetItem(str(progress[3])))
 
             self.table_workers.item(row, 0).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 1).setBackground(QColor(220,255,220))
