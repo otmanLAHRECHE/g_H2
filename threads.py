@@ -127,8 +127,6 @@ class ThreadLoadWorkers(QThread):
             service_name = service_name[0]
             work_list = list(work)
             work_list[3] = service_name[0]
-
-            print(work)
             self._signal_list.emit(work_list)
 
         self._signal_result.emit(True)

@@ -38,7 +38,12 @@ class MainWindow(QMainWindow):
         self.progress = self.findChild(QtWidgets.QProgressBar, "progressBar")
         self.table_workers = self.findChild(QtWidgets.QTableWidget, "tableWidget")
 
+        self.table_workers.hideColumn(0)
+        self.table_workers.setColumnWidth(1, 180)
+        self.table_workers.setColumnWidth(2, 180)
+        self.table_workers.setColumnWidth(3, 180)
         self.load_workers()
+        self.load_services_combo()
 
     
     def _createMenuBar(self):
@@ -246,10 +251,20 @@ class MainWindow(QMainWindow):
     
     
     def workerUpdateActionClicked_(self):
-        self.dialog = Worker_dialog()
-        self.dialog.setWindowTitle("update worker")
-        self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-        self.dialog.show()
+        print(self.table_workers.currentRow())
+        if(self.table_workers.currentRow() == -1):
+            self.alert_("select one worker")
+        else:
+            self.dialog = Worker_dialog()
+            self.dialog.setWindowTitle("update worker")
+            self.dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+            for i in range(len(self.service_combo)):
+                serv = self.service_combo[i]
+                self.dialog.service.addItem(serv[0])
+            self.dialog.nom.setText(self.table_workers.item(self.table_workers.currentRow(),1).text())
+            self.dialog.prenom.setText(self.table_workers.item(self.table_workers.currentRow(),2).text())
+            self.dialog.service.setCurrentText(self.table_workers.item(self.table_workers.currentRow(),3).text())
+            self.dialog.show()
 
     
 
@@ -352,13 +367,15 @@ class MainWindow(QMainWindow):
 
             row = self.table_workers.rowCount()
             self.table_workers.insertRow(row)
-            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[1]))
-            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[2]))
-            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[3]))
+            self.table_workers.setItem(row, 0, QTableWidgetItem(progress[0]))
+            self.table_workers.setItem(row, 1, QTableWidgetItem(progress[1]))
+            self.table_workers.setItem(row, 2, QTableWidgetItem(progress[2]))
+            self.table_workers.setItem(row, 3, QTableWidgetItem(progress[3]))
 
             self.table_workers.item(row, 0).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 1).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 2).setBackground(QColor(220,255,220))
+            self.table_workers.item(row, 3).setBackground(QColor(220,255,220))
 
     def flt(self, filter_text):
         for i in range(self.table_workers.rowCount()):
