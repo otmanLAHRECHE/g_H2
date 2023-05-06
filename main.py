@@ -163,6 +163,7 @@ class MainWindow(QMainWindow):
         newTip = "Find worker"
         self.find_worker.setStatusTip(newTip)
         self.find_worker.setToolTip(newTip)
+        self.find_worker.textChanged.connect(self.filter_workers)
 
         
 
@@ -359,7 +360,18 @@ class MainWindow(QMainWindow):
             self.table_workers.item(row, 1).setBackground(QColor(220,255,220))
             self.table_workers.item(row, 2).setBackground(QColor(220,255,220))
 
+    def flt(self, filter_text):
+        for i in range(self.table_workers.rowCount()):
+            for j in range(self.table_workers.columnCount()):
+                item = self.table_workers.item(i, j)
+                match = filter_text.lower() not in item.text().lower()
+                self.table_workers.setRowHidden(i, match)
+                if not match:
+                    break
 
+
+    def filter_workers(self, text):
+        self.flt(text)
 
 
 if __name__ == "__main__":
