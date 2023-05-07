@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>671</width>
+    <height>346</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Table de Garde</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <row>
+      <property name="text">
+       <string>Janvier</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Février</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Mars</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Avril</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Mai</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Juin</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Juillet</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Aout</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>September</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>October</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>November</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Desember</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Total</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Month</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Year</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>JN</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>JW</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>JF</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>J.sup</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Total</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Print</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="text">
+         <string>Check</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

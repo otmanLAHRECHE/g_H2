@@ -104,6 +104,7 @@ class MainWindow(QMainWindow):
         newTip = "Details of selected worker"
         self.detailsAction.setStatusTip(newTip)
         self.detailsAction.setToolTip(newTip)
+        self.detailsAction.triggered.connect(self.workerDetailActionClicked_)
 
         self.helpAction = QAction(self)
         self.helpAction.setText("&About")
@@ -303,6 +304,24 @@ class MainWindow(QMainWindow):
         else:
             self.progress.setValue(0)
             self.load_workers()
+
+    
+    def workerDetailActionClicked_(self):
+        if(self.table_workers.currentRow() == -1):
+            self.alert_("select one worker")
+        else:
+            message = "You want to delete this worker?"
+            dialog = ChoseYearDialog()
+            if dialog.exec():
+                if dialog.year.text() == "" or len(dialog.year.text()) > 4 or (dialog.max.text() != "6" and dialog.max.text() != "10"):
+                    self.alert_("chose a valide year")
+                else:
+                    dialog.close()
+                    self.garde_dialog = GardeDialog(dialog.year.text(), dialog.max.text())
+                    self.garde_dialog.show()
+
+            else:
+                dialog.close()
                 
 
 
