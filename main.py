@@ -95,6 +95,7 @@ class MainWindow(QMainWindow):
         newTip = "Delete selected worker"
         self.deleteAction.setStatusTip(newTip)
         self.deleteAction.setToolTip(newTip)
+        self.deleteAction.triggered.connect(self.workerDeleteActionClicked_)
 
         self.detailsAction = QAction(self)
         self.detailsAction.setText("&Details")
@@ -251,7 +252,6 @@ class MainWindow(QMainWindow):
     
     
     def workerUpdateActionClicked_(self):
-        print(self.table_workers.currentRow())
         if(self.table_workers.currentRow() == -1):
             self.alert_("select one worker")
         else:
@@ -283,6 +283,28 @@ class MainWindow(QMainWindow):
             self.load_workers()
 
     
+    def workerDeleteActionClicked_(self):
+        if(self.table_workers.currentRow() == -1):
+            self.alert_("select one worker")
+        else:
+            message = "You want to delete this worker?"
+            dialog = CustomDialog(message)
+            if dialog.exec():
+                self.thread = ThreadDeleteWorker(self.table_workers.item(self.table_workers.currentRow(), 0).text()) 
+                self.thread._signal.connect(self.signal_delete_worker)
+                self.thread._signal_result.connect(self.signal_delete_worker)
+                self.thread.start()
+            else:
+                dialog.close()
+
+    def signal_delete_worker(self, progress):
+        if type(progress) == int:
+            self.progress.setValue(progress)
+        else:
+            self.progress.setValue(0)
+            self.load_workers()
+                
+
 
     def _service_add_clicked(self):
         if self.dialog.service.text() == "":
@@ -366,6 +388,8 @@ class MainWindow(QMainWindow):
             a0.ignore()
 
     def load_workers(self):
+        
+        self.load_services_combo()
         self.table_workers.setRowCount(0)
 
         self.thread = ThreadLoadWorkers()

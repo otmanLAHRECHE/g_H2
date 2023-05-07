@@ -214,7 +214,7 @@ class ThreadDeleteWorker(QThread):
             time.sleep(0.005)
 
         
-        delete_worker(id)
+        delete_worker(int(self.id))
 
         for i in range(30, 99):
             self._signal.emit(i)
