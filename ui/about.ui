@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>715</width>
+    <width>871</width>
     <height>514</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>370</x>
      <y>10</y>
      <width>491</width>
      <height>491</height>
@@ -34,7 +34,7 @@
     <rect>
      <x>10</x>
      <y>80</y>
-     <width>201</width>
+     <width>351</width>
      <height>21</height>
     </rect>
    </property>
@@ -61,7 +61,7 @@
     <rect>
      <x>10</x>
      <y>60</y>
-     <width>201</width>
+     <width>331</width>
      <height>21</height>
     </rect>
    </property>
@@ -88,7 +88,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>201</width>
+     <width>341</width>
      <height>51</height>
     </rect>
    </property>

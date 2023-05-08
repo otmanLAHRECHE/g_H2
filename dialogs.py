@@ -1,8 +1,8 @@
 from PyQt5 import uic
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QDialogButtonBox, QVBoxLayout, QLabel, QTableWidgetItem
-
+from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QMessageBox, QDialogButtonBox, QVBoxLayout, QLabel, QTableWidgetItem
+from threads import *
 
 
 class Worker_dialog(QtWidgets.QDialog):
@@ -60,12 +60,47 @@ class CustomDialog(QtWidgets.QDialog):
 
 
 class ChoseYearDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, worker_id):
         super(ChoseYearDialog, self).__init__()
         uic.loadUi("./ui/chose_year_dialog.ui", self)
 
-        self.year = self.findChild(QtWidgets.QLineEdit, "lineEdit")
+        self.chose = self.findChild(QtWidgets.QComboBox, "comboBox")
+        self.year = self.findChild(QtWidgets.QLineEdit, "lineEdit_3")
         self.max = self.findChild(QtWidgets.QLineEdit, "lineEdit_2")
+        self.worker_id = worker_id
+        
+        self.year.setEnabled(True)
+        self.max.setEnabled(True)
+
+        self.thread = ThreadChoseYear(self.worker_id)
+        self.thread._signal_list.connect(self.signal_chose_year)
+        self.thread._signal_result.connect(self.signal_chose_year)
+
+        self.chose.currentTextChanged.connect(self.chose_changed)
+
+    def signal_chose_year(self, progress):
+        if type(progress) == list:
+            if len(progress) > 0:
+                for i in range(len(progress)):
+                    self.chose.addItem(progress[i])
+            
+
+    def chose_changed(self, value):
+        if(value == "new_year"):
+            self.year.setEnabled(True)
+            self.max.setEnabled(True)
+        else:
+            self.year.setEnabled(False)
+            self.max.setEnabled(False)
+            connection = sqlite3.connect("data/database.db")
+            cur = connection.cursor()
+            sql_q = 'SELECT DISTINCT j_s FROM garde WHERE gardien_id= ? and year=?'
+            cur.execute(sql_q, (self.worker_id, int(value)))
+            results = cur.fetchall()
+            connection.close()
+            results = results[0]
+            self.year.setText(value)
+            self.max.setText(results[0])
 
 
 
@@ -81,7 +116,7 @@ class GardeDialog(QtWidgets.QDialog):
         self.print = self.findChild(QtWidgets.QPushButton, "pushButton_2")
         self.reset = self.findChild(QtWidgets.QPushButton, "pushButton_3")
         self.check = self.findChild(QtWidgets.QPushButton, "pushButton_4")
-
+        self.check.clicked.connect(self.calc_total)
         self.initialising_table()
 
 
@@ -89,24 +124,40 @@ class GardeDialog(QtWidgets.QDialog):
     def initialising_table(self):
         for i in range(self.table_garde.rowCount()):
             for j in range(self.table_garde.columnCount()):
-                if(j == 0 and i < 12):
-                    self.table_garde.setItem(i, j, QTableWidgetItem(str(i + 1)))
-                elif(j == 1 and i < 11):
-                    self.table_garde.setItem(i, j, QTableWidgetItem(str(self.year)))
+                if(j == 0):
+                        self.table_garde.setItem(i, j, QTableWidgetItem(str(i + 1)))
+                elif(j == 1):
+                        self.table_garde.setItem(i, j, QTableWidgetItem(str(self.year)))
                 else:
                     self.table_garde.setItem(i, j, QTableWidgetItem(str("0")))
 
-    def total(self, item):
-        total_x = 0
-        total_y = 0
-        print(range(self.table_garde.rowCount()))
-        print(range(self.table_garde.columnCount()))
+
+    def calc_total(self):
         for i in range(self.table_garde.rowCount()):
-            total_x = total_x + int(self.table_garde.item(i, item.column()).text()) 
-        for j in range(self.table_garde.columnCount()):
-            total_y = total_y + int(self.table_garde.item(item.row(), j).text()) 
-        self.table_garde.setItem(item.row(), 6, QTableWidgetItem(str(total_x)))
-        self.table_garde.setItem(12, item.column(), QTableWidgetItem(str(total_y)))
+            total_x = 0
+            sup = 0
+            for j in range(2, 5):
+                total_x = total_x + int(self.table_garde.item(i, j).text()) 
+            if total_x > self.max:
+                sup = total_x - self.max
+                total_x = self.max
+                self.table_garde.setItem(i, 6, QTableWidgetItem(str(total_x)))
+                self.table_garde.item(i, 6).setBackground(QColor(220,255,220))
+                self.table_garde.setItem(i, 5, QTableWidgetItem(str(sup)))
+                self.table_garde.item(i, 5).setBackground(QColor(224, 221, 119))
+            elif total_x == self.max:
+                self.table_garde.setItem(i, 6, QTableWidgetItem(str(total_x)))
+                self.table_garde.item(i, 6).setBackground(QColor(220,255,220))
+            else:
+                self.table_garde.setItem(i, 6, QTableWidgetItem(str(total_x)))
+        
+        self.alert_("ready to save...")
+
+    def alert_(self, message):
+        alert = QMessageBox()
+        alert.setWindowTitle("alert")
+        alert.setText(message)
+        alert.exec_()
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         message = "You want to exit?"

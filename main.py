@@ -14,7 +14,6 @@ from dialogs import *
 from threads import *
 
 
-os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 try:
     from ctypes import windll  # Only exists on Windows.
     myappid = 'EPSP_Djanet.EPSP_Guard.1'
@@ -267,14 +266,14 @@ class MainWindow(QMainWindow):
             self.dialog.service.setCurrentText(self.table_workers.item(self.table_workers.currentRow(),3).text())
             self.dialog.show()
 
-        if self.dialog.exec():
-            if(self.dialog.nom.text() == "" or self.dialog.prenom.text() == ""):
-                self.alert_("error in firstname or lastname")
-            else:
-                self.thread = ThreadUpdateWorker(self.table_workers.item(self.table_workers.currentRow(),0).text(), self.dialog.nom.text(), self.dialog.prenom.text(), self.dialog.service.currentText()) 
-                self.thread._signal.connect(self.signal_update_worker)
-                self.thread._signal_result.connect(self.signal_update_worker)
-                self.thread.start()
+            if self.dialog.exec():
+                if(self.dialog.nom.text() == "" or self.dialog.prenom.text() == ""):
+                    self.alert_("error in firstname or lastname")
+                else:
+                    self.thread = ThreadUpdateWorker(self.table_workers.item(self.table_workers.currentRow(),0).text(), self.dialog.nom.text(), self.dialog.prenom.text(), self.dialog.service.currentText()) 
+                    self.thread._signal.connect(self.signal_update_worker)
+                    self.thread._signal_result.connect(self.signal_update_worker)
+                    self.thread.start()
 
     def signal_update_worker(self, progress):
         if type(progress) == int:
@@ -311,19 +310,21 @@ class MainWindow(QMainWindow):
             self.alert_("select one worker")
         else:
             message = "You want to delete this worker?"
-            dialog = ChoseYearDialog()
+            dialog = ChoseYearDialog(self.table_workers.item(self.table_workers.currentRow(), 0).text())
             if dialog.exec():
-                if dialog.year.text() == "" or len(dialog.year.text()) > 4 or (dialog.max.text() != "6" and dialog.max.text() != "10"):
-                    self.alert_("chose a valide year")
+                if dialog.chose.currentText() == "new_year":
+                    if dialog.year.text() == "" or len(dialog.year.text()) > 4 or (dialog.max.text() != "6" and dialog.max.text() != "10"):
+                        self.alert_("chose a valide year")
+                    else:
+                        dialog.close()
+                        self.garde_dialog = GardeDialog(dialog.year.text(), dialog.max.text())
+                        self.garde_dialog.show()
                 else:
-                    dialog.close()
                     self.garde_dialog = GardeDialog(dialog.year.text(), dialog.max.text())
                     self.garde_dialog.show()
 
             else:
                 dialog.close()
-                
-
 
     def _service_add_clicked(self):
         if self.dialog.service.text() == "":

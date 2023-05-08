@@ -222,3 +222,26 @@ class ThreadDeleteWorker(QThread):
 
         self._signal_result.emit(True)
 
+class ThreadChoseYear(QThread):
+    _signal_list = pyqtSignal(list)
+    _signal_result = pyqtSignal(bool)
+
+    def __init__(self, worker_id):
+        super(ThreadChoseYear, self).__init__()
+        self.worker_id = worker_id
+
+    def __del__(self):
+        self.terminate()
+        self.wait()
+
+    def run(self):
+
+        years = get_garde_years_for_worker(int(self.worker_id))
+
+        self._signal_list.emit(years)
+
+        self._signal_result.emit(True)
+
+
+
+

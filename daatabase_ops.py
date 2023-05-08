@@ -90,3 +90,12 @@ def delete_worker(id):
     cur.execute(sql_q, (id,))
     connection.commit()
     connection.close()
+
+def get_garde_years_for_worker(worker_id):
+    connection = sqlite3.connect("data/database.db")
+    cur = connection.cursor()
+    sql_q = 'SELECT DISTINCT year, j_s FROM garde WHERE gardien_id= ?'
+    cur.execute(sql_q, (worker_id,))
+    results = cur.fetchall()
+    connection.close()
+    return results

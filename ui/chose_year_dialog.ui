@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>364</width>
-    <height>93</height>
+    <width>450</width>
+    <height>120</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>364</width>
-    <height>93</height>
+    <width>450</width>
+    <height>120</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>364</width>
-    <height>93</height>
+    <width>450</width>
+    <height>120</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,10 +28,10 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>60</y>
+     <x>260</x>
+     <y>79</y>
      <width>171</width>
-     <height>20</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="orientation">
@@ -46,7 +46,7 @@
     <rect>
      <x>10</x>
      <y>20</y>
-     <width>101</width>
+     <width>161</width>
      <height>16</height>
     </rect>
    </property>
@@ -54,22 +54,12 @@
     <string>Chose the year:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>20</y>
-     <width>231</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>50</y>
-     <width>101</width>
+     <y>90</y>
+     <width>141</width>
      <height>16</height>
     </rect>
    </property>
@@ -80,11 +70,52 @@
   <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>50</y>
+     <x>160</x>
+     <y>90</y>
      <width>41</width>
      <height>20</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>20</y>
+     <width>231</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>new_year</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_3">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>60</y>
+     <width>41</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>141</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>year</string>
    </property>
   </widget>
  </widget>
